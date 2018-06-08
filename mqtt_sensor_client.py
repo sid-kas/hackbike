@@ -1,5 +1,7 @@
-#!/usr/bin/env python
-import PCF8591 as ADC 
+#!/usr/bin/env python3
+import sys
+sys.path.insert(0,"..//")
+import PCF8591 as ADC
 import time
 import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
@@ -43,9 +45,14 @@ def on_connect(client, userdata, rc, *extra_params):
 
 def on_message(client, userdata, msg):
     data = direction()
-    if data != 'home':
+##    print("msg", data)
+    if data == 'home':
+        client.publish('pi/joystick', 'spam', 1)
+    elif data == 'pressed':
+        client.publish('pi/joystick', 'spam', 1)
+    else:
         client.publish('pi/joystick', data, 1)
-
+        
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
@@ -57,5 +64,5 @@ if __name__ == '__main__':
 	setup()
 	try:
 		client.loop_forever()
-    except KeyboardInterrupt:
-        client.loop_stop(force=True)
+	except KeyboardInterrupt:
+        	client.loop_stop(force=True)
