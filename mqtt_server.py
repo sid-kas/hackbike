@@ -56,6 +56,6 @@ client.connect(THINGSBOARD_HOST, 1883, 60)
 if __name__ == '__main__':		
 	setup()
 	try:
-        client.loop_forever()
+		client.loop_forever()
     except KeyboardInterrupt:
         client.loop_stop(force=True)
