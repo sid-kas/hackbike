@@ -59,8 +59,18 @@ def loop():
                 motor.write(screendata)
                 screen.flush()
                 motordata=motor.readline(43)
-                print  "Motor Data ???? : " + repr(motordata)
-                screen.write(motordata)
+                motorval =motordata.split(" ")
+	        if "\xf0" in motorval[0]:
+                        send = str.replace(motorval[0],"\xf0","\xf1",1)
+                        print motorval[0]
+                	print  "Motor Data ???? : " + repr(motorval[0])
+                        print send
+                	screen.write(send)
+		else:
+			print  "Motor Data ???? : " + repr(motor)
+                        send = str.replace(motorval[0],"\xf1","\xf0",1)
+                        print send     
+                        screen.write(send)
                 motor.flush()
 
 
