@@ -4,7 +4,6 @@ sys.path.insert(0,"..//")
 
 import PCF8591 as ADC
 import time
-import paho.mqtt.client as mqtt
 import json
 import smbus
 import math

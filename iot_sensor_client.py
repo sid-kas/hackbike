@@ -16,7 +16,7 @@ host = "a2xzgqat4h4es4.iot.us-east-1.amazonaws.com"
 rootCAPath = "/usr/lib/ssl/certs/root-CA.crt"
 certificatePath = "/usr/lib/ssl/certs/RPi-Mountain-Lion.cert.pem"
 privateKeyPath = "/usr/lib/ssl/certs/RPi-Mountain-Lion.private.key"
-useWebsocket = True
+useWebsocket = False
 clientId = "hackbikeserver"
 topic = 'pi/#'
 
@@ -29,10 +29,10 @@ def on_message():
 	accel_zout = read_word_2c(0x3f)/16384.0
 	terrain = {'x':get_x_rotation(accel_xout, accel_yout, accel_zout), 'y': get_y_rotation(accel_xout, accel_yout, accel_zout)}
 
-	terrainMsg = Message("pi/terrain",terrain)
-	if joystick == 'home' or data == 'pressed':
+	terrainMsg = Message("pi/terrain",str(terrain))
+	if joystick == 'home' or joystick == 'pressed':
 		joystick = "spam"
-	joystickMsg = Message("pi/joystick", joystick)
+	joystickMsg = Message("pi/joystick", str(joystick))
 
 	return terrainMsg, joystickMsg	
 
@@ -65,6 +65,7 @@ if __name__ == '__main__':
 	setup()
 	while True:
 		e1, e2 = on_message()
-		client.publishAsync(e1.topic,round(time.time()) + ": "+ e1.data, 1)
-		client.publishAsync(e2.topic, round(time.time()) + ": "+ e2.data, 1)
+		print("msg sent: ", e1.data, e2.data)
+		client.publishAsync(e1.topic, str(round(time.time())) + ": " + e1.data, 1)
+		client.publishAsync(e2.topic, str(round(time.time())) + ": " + e2.data, 1)
 		time.sleep(0.5)
