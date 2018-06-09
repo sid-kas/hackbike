@@ -88,5 +88,6 @@ if __name__ == '__main__':
 		e1, e2 = on_message()
 		print("msg sent: ", e1.data, e2.data)
 		client.publishAsync(e1.topic, str(round(time.time())) + ": " + e1.data, 1)#, ackCallback=customPubackCallback)
-		client.publishAsync(e2.topic, str(round(time.time())) + ": " + e2.data, 1)#, ackCallback=customPubackCallback)
+		if e2.data != "spam":
+			client.publishAsync(e2.topic, str(round(time.time())) + ": " + e2.data, 1)#, ackCallback=customPubackCallback)
 		time.sleep(0.8)
