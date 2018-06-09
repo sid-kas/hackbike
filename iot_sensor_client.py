@@ -11,6 +11,7 @@ import PCF8591 as ADC
 import smbus
 
 from sensor_utils import *
+from gpio_utils.py import *
 
 host = "a2xzgqat4h4es4.iot.us-east-1.amazonaws.com"
 rootCAPath = "/usr/lib/ssl/certs/root-CA.crt"
@@ -49,13 +50,15 @@ def on_message():
 	accel_yout = read_word_2c(0x3d)/16384.0
 	accel_zout = read_word_2c(0x3f)/16384.0
 	terrain = {'x':get_x_rotation(accel_xout, accel_yout, accel_zout), 'y': get_y_rotation(accel_xout, accel_yout, accel_zout)}
+    reed = detect;
 
 	terrainMsg = Message("pi/terrain",str(terrain))
 	if joystick == 'home' or joystick == 'pressed':
 		joystick = "spam"
 	joystickMsg = Message("pi/joystick", str(joystick))
+    reedMsg = Message("pi/joystick", str(reed))
 
-	return terrainMsg, joystickMsg	
+	return terrainMsg, joystickMsg, reedMsg	
 
 # Init AWSIoTMQTTClient
 client = None

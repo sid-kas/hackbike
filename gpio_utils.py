@@ -11,32 +11,22 @@ def setup():
 	GPIO.setup(ReedPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)    # Set BtnPin's mode is input, and pull up to high level(3.3V)
 	GPIO.add_event_detect(ReedPin, GPIO.BOTH, callback=detect, bouncetime=200)
 
-def Led(x):
-	if x == 0:
-		GPIO.output(Rpin, 1)
-		GPIO.output(Gpin, 0)
-	if x == 1:
-		GPIO.output(Rpin, 0)
-		GPIO.output(Gpin, 1)
-
 def Print(x):
 	if x == 0:
 		print '    ***********************************'
 		print '    *   Detected Magnetic Material!   *'
 		print '    ***********************************'
 
-def detect(chn):
-	Led(GPIO.input(ReedPin))
-	Print(GPIO.input(ReedPin))
+def detect():
+	#Led(GPIO.input(ReedPin))
+	var = GPIO.input(ReedPin)
+	return if var == 0
+	#Print(GPIO.input(ReedPin))
 
 def loop():
 	while True:
 		pass
 
-def destroy():
-	GPIO.output(Gpin, GPIO.HIGH)       # Green led off
-	GPIO.output(Rpin, GPIO.HIGH)       # Red led off
-	GPIO.cleanup()                     # Release resource
 
 if __name__ == '__main__':     # Program start from here
 	setup()
