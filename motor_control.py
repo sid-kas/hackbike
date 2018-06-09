@@ -59,8 +59,13 @@ def loop():
                 motor.write(screendata)
                 screen.flush()
                 motordata=motor.readline(43)
-                print  "Motor Data ???? : " + repr(motordata)
-                screen.write(motordata)
+                motorval =motordata.split(" ")
+	        if "0xf0" in motorval[0]:
+                	print  "Motor Data ???? : " + repr(motor)
+                	screen.write("0x16 0x1a 0xf1 0x11")
+		else:
+			print  "Motor Data ???? : " + repr(motor)
+                        screen.write("0x16 0x1a 0xf0 0x11")
                 motor.flush()
 
 
