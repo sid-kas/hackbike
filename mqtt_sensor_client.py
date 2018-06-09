@@ -4,7 +4,6 @@ sys.path.insert(0,"..//")
 import PCF8591 as ADC
 import time
 import paho.mqtt.client as mqtt
-import RPi.GPIO as GPIO
 import json
 
 THINGSBOARD_HOST = '0.0.0.0'
@@ -45,7 +44,6 @@ def on_connect(client, userdata, rc, *extra_params):
 
 def on_message(client, userdata, msg):
     data = direction()
-##    print("msg", data)
     if data == 'home':
         client.publish('pi/joystick', 'spam', 1)
     elif data == 'pressed':
@@ -64,5 +62,5 @@ if __name__ == '__main__':
 	setup()
 	try:
 		client.loop_forever()
-	except KeyboardInterrupt:
+	except KeyboardInte
         	client.loop_stop(force=True)
