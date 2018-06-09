@@ -20,6 +20,20 @@ useWebsocket = False
 clientId = "hackbikeserver"
 topic = 'pi/#'
 
+# Suback callback
+def customSubackCallback(mid, data):
+    print("Received SUBACK packet id: ")
+    print(mid)
+    print("Granted QoS: ")
+    print(data)
+    print("++++++++++++++\n\n")
+
+
+# Puback callback
+def customPubackCallback(mid):
+    print("Received PUBACK packet id: ")
+    print(mid)
+    print("++++++++++++++\n\n")
 
 def on_message():
 	time.sleep(0.1)
@@ -57,7 +71,7 @@ client.configureMQTTOperationTimeout(5)  # 5 sec
 # Connect and subscribe to AWS IoT
 client.connect()
 # Note that we are not putting a message callback here. We are using the general message notification callback.
-client.subscribeAsync(topic, 1)
+client.subscribeAsync(topic, 1, ackCallback=customSubackCallback)
 time.sleep(2)
 
 
@@ -66,6 +80,6 @@ if __name__ == '__main__':
 	while True:
 		e1, e2 = on_message()
 		print("msg sent: ", e1.data, e2.data)
-		client.publishAsync(e1.topic, str(round(time.time())) + ": " + e1.data, 1)
-		client.publishAsync(e2.topic, str(round(time.time())) + ": " + e2.data, 1)
+		client.publishAsync(e1.topic, str(round(time.time())) + ": " + e1.data, 1, ackCallback=customPubackCallback)
+		client.publishAsync(e2.topic, str(round(time.time())) + ": " + e2.data, 1, ackCallback=customPubackCallback)
 		time.sleep(0.5)
