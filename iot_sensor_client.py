@@ -13,9 +13,9 @@ import smbus
 from sensor_utils import *
 
 host = "a2xzgqat4h4es4.iot.us-east-1.amazonaws.com"
-rootCAPath = "../IOT_AWS/root-CA.crt"
-certificatePath = "../IOT_AWS/RPi-Mountain-Lion.cert.pem"
-privateKeyPath = "../IOT_AWS/RPi-Mountain-Lion.private.key"
+rootCAPath = "/usr/lib/ssl/certs/root-CA.crt"
+certificatePath = "/usr/lib/ssl/certs/RPi-Mountain-Lion.cert.pem"
+privateKeyPath = "/usr/lib/ssl/certs/RPi-Mountain-Lion.private.key"
 useWebsocket = True
 clientId = "hackbikeserver"
 topic = 'pi/#'
