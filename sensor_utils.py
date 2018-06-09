@@ -9,7 +9,9 @@ import json
 import smbus
 import math
 
-bus = smbus.SMBus(1) 
+bus = smbus.SMBus(1)
+power_mgmt_1 = 0x6b
+address = 0x68
 def read_word(adr):
     high = bus.read_byte_data(address, adr)
     low = bus.read_byte_data(address, adr+1)
