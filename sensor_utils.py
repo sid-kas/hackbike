@@ -60,3 +60,9 @@ def direction():	#get joystick result
 		i = 0
 
 	return state[i]
+
+
+class Message():
+	def __init__(self,topic, data):
+		self.topic = topic
+		self.data = data
