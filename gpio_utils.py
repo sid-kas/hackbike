@@ -1,13 +1,10 @@
 import RPi.GPIO as GPIO
 
 ReedPin = 11
-Gpin    = 12
-Rpin    = 13
+
 
 def setup():
 	GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
-	GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
-	GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
 	GPIO.setup(ReedPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)    # Set BtnPin's mode is input, and pull up to high level(3.3V)
 	GPIO.add_event_detect(ReedPin, GPIO.BOTH, callback=detect, bouncetime=200)
 
@@ -20,8 +17,11 @@ def Print(x):
 def detect():
 	#Led(GPIO.input(ReedPin))
 	var = GPIO.input(ReedPin)
-	return if var == 0
-	#Print(GPIO.input(ReedPin))
+    if var == 0:
+        return "contact_made"
+    else:
+        return "no_contact"
+
 
 def loop():
 	while True:
