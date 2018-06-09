@@ -15,30 +15,30 @@ THINGSBOARD_HOST = '0.0.0.0'
 ACCESS_TOKEN = 'hacknbike'
 
 def on_connect(client, userdata, rc, *extra_params):
-    print('Connected with result code ' + str(rc))
-	accel_xout = read_word_2c(0x3b)
-    accel_yout = read_word_2c(0x3d)
-    accel_zout = read_word_2c(0x3f)
-	terrain = {'x':get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled), 'y': get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)}
-
-    client.subscribe('pi/#')
-    client.publish('pi/joystick', "joystick: "+ direction())
-	client.publish('pi/terrain', 'terrain: '+ str(terrain) )
+	print('Connected with result code ' + str(rc))
+	accel_xout = read_word_2c(0x3b)/16384.0
+	accel_yout = read_word_2c(0x3d)/16384.0
+	accel_zout = read_word_2c(0x3f)/16384.0
+        terrain = {'x':get_x_rotation(accel_xout, accel_yout, accel_zout), 'y': get_y_rotation(accel_xout, accel_yout, accel_zout)}
+	client.subscribe('pi/#')
+	client.publish('pi/joystick', "joystick: "+ direction())
+	client.publish('pi/terrain', 'terrain: '+ str(terrain))
 
 def on_message(client, userdata, msg):
-    data = direction()
-	accel_xout = read_word_2c(0x3b)
-    accel_yout = read_word_2c(0x3d)
-    accel_zout = read_word_2c(0x3f)
-	terrain = {'x':get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled), 'y': get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)}
-
-    if data == 'home':
-        client.publish('pi/joystick', 'spam')
-    elif data == 'pressed':
-        client.publish('pi/joystick', 'spam')
-    else:
-        client.publish('pi/joystick', data)
-		client.publish('pi/terrain',str(terrain))
+        time.sleep(0.1)
+	data = direction()
+	accel_xout = read_word_2c(0x3b)/16384.0
+	accel_yout = read_word_2c(0x3d)/16384.0
+	accel_zout = read_word_2c(0x3f)/16384.0
+	terrain = {'x':get_x_rotation(accel_xout, accel_yout, accel_zout), 'y': get_y_rotation(accel_xout, accel_yout, accel_zout)}
+        client.publish('pi/terrain',str(terrain))
+	
+	if data == 'home':
+        	client.publish('pi/joystick', 'spam')
+	elif data == 'pressed':
+        	client.publish('pi/joystick', 'spam')
+	else:
+        	client.publish('pi/joystick', data)
         
 client = mqtt.Client()
 client.on_connect = on_connect
