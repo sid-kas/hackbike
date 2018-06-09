@@ -60,12 +60,17 @@ def loop():
                 screen.flush()
                 motordata=motor.readline(43)
                 motorval =motordata.split(" ")
-	        if "0xf0" in motorval[0]:
-                	print  "Motor Data ???? : " + repr(motor)
-                	screen.write("0x16 0x1a 0xf1 0x11")
+	        if "\xf0" in motorval[0]:
+                        send = str.replace(motorval[0],"\xf0","\xf1",1)
+                        print motorval[0]
+                	print  "Motor Data ???? : " + repr(motorval[0])
+                        print send
+                	screen.write(send)
 		else:
 			print  "Motor Data ???? : " + repr(motor)
-                        screen.write("0x16 0x1a 0xf0 0x11")
+                        send = str.replace(motorval[0],"\xf1","\xf0",1)
+                        print send     
+                        screen.write(send)
                 motor.flush()
 
 
